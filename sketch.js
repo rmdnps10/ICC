@@ -1,10 +1,6 @@
 const { Engine, Composite, Bodies, Mouse, MouseConstraint, Constraint } =
   Matter;
 const boxes1 = [];
-const boxes2 = [];
-const boxes3 = [];
-const boxes4 = [];
-const boxes5 = [];
 
 let world, engine;
 const boxwidth = 40;
@@ -42,21 +38,67 @@ function setup() {
   console.log(windowHeight);
   boundary_left = new Boundary(0, height / 2, 2, height, 0); // 가상왼쪽벽
   boundary_right = new Boundary(width, height / 2, 2, height, 0); // 가상오른쪽벽
-  boundary_1 = new Boundary(width / 5, height / 3, width / 2, 1, -PI / 5);
-  boundary_2 = new Boundary((width / 5) * 4, height / 3, width / 2, 1, PI / 5);
+
+  boundary_4 = new Boundary(
+    (width / 100) * 40,
+    (height / 100) * 80,
+    1,
+    height * 0.12,
+    PI / 12
+  );
+  boundary_5 = new Boundary(
+    (width / 100) * 60,
+    (height / 100) * 80,
+    1,
+    height * 0.12,
+    -PI / 12
+  );
+
+  boundary_6 = new Boundary(
+    width * 0.655,
+    height * 0.5,
+    height / 7,
+    1,
+    (PI / 2) * 0.8
+  );
+  boundary_7 = new Boundary(
+    width * 0.345,
+    height * 0.5,
+    height / 7,
+    1,
+    (-PI / 2) * 0.8
+  );
+
+  boundary_8 = new Boundary(width * 0.28, height * 0.33, width / 6, 1, PI / 6);
+  boundary_9 = new Boundary(width * 0.72, height * 0.33, width / 6, 1, -PI / 6);
+  boundary_10 = new Boundary(
+    width * 0.22,
+    height * 0.2,
+    width * 0.25,
+    1,
+    -PI / 4
+  );
+  boundary_11 = new Boundary(
+    width * 0.78,
+    height * 0.2,
+    width * 0.25,
+    1,
+    PI / 4
+  );
+
   hourglass_left = new Boundary(
-    width / 4,
-    height / 2,
-    (width / 3) * 2,
+    width * 0.38,
+    height * 0.65,
+    height / 6,
     5,
-    -PI / 2 - PI / 5
+    PI / 3
   );
   hourglass_right = new Boundary(
-    (width / 4) * 3,
-    height / 2,
-    (width / 3) * 2,
+    width * 0.62,
+    height * 0.65,
+    height / 6,
     5,
-    -PI / 2 + PI / 5
+    -PI / 3
   );
 
   const boxImages = [
@@ -72,25 +114,27 @@ function setup() {
     boxImg4_2,
   ];
 
-  for (let i = 0; i < 350; i++) {
+  for (let i = 0; i < 320; i++) {
     const box = new Box(width / 2, 0.2 * i, boxwidth, boxheight, boxImages);
     boxes1.push(box);
   }
 }
 
-function mouseClicked() {
-  console.log(12);
-  Composite.remove(world, hourglass_left);
-  console.log(Composite);
-  Composite.remove(world, hourglass_right);
-}
-
 function draw() {
   background("white");
+  c1 = color(255, 255, 255);
+  c2 = color(0, 0, 0);
+  for (let y = 0; y < height; y++) {
+    n = map(y, 0, height, 0, 1);
+    let newc = lerpColor(c1, c2, n);
+    stroke(newc);
+    line(0, y, width, y);
+  }
+
   Matter.Engine.update(engine);
 
   for (let box of boxes1) {
     box.show();
-    box.updateImage(350);
+    if (frameCount < 500) box.updateImage((height / 789) * 320);
   }
 }
